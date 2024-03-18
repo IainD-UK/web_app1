@@ -2,6 +2,8 @@ import streamlit as st
 import functions
 
 todos = functions.get_ToDos()
+st.set_page_config(layout="wide")
+
 def add_todo():
     todo = st.session_state["new_todo"] +"\n"
     todos.append(todo)
@@ -14,8 +16,11 @@ def clear_text():
 
 st.title("My ToDo App")
 st.subheader("This is my ToDo app")
-st.write("This app is to increase your productivity")
+st.write("This app is to increase <b>your<b> productivity",
+         unsafe_allow_html=True) #Allow HTML text tags into the field
 
+st.text_input(label="blank",label_visibility="hidden", placeholder="Add new To Do....",key="new_todo",
+              help="Hit enter to add", on_change=add_todo)  # Label is required, even if left ""
 for index, todo in enumerate(todos):
     checkbox = st.checkbox(todo,key=todo)
     if checkbox:
@@ -24,5 +29,3 @@ for index, todo in enumerate(todos):
         del st.session_state[todo] #refreshes the screen
         st.experimental_rerun()
 
-st.text_input(label="blank",label_visibility="hidden", placeholder="Add new To Do....",key="new_todo",
-              help="Hit enter to add", on_change=add_todo)  # Label is required, even if left ""
